@@ -7,7 +7,7 @@ import domain.working_date.WorkingDay
 
 import scalaz.Scalaz._
 
-case class InputOfficeHourRequest(day: WorkingDay, startTime: StartTime, endTime: EndTime)
+case class InputOfficeHourRequest(day: WorkingDay, start: StartTime, end: EndTime)
 
 object InputOfficeHourRequest {
   def validate(values: Seq[String]): Validated[InputOfficeHourRequest] = {
