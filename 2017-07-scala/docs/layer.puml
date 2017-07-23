@@ -1,0 +1,61 @@
+@startuml
+
+namespace api {
+  namespace input {
+    class InputOfficeHourApi {
+      + {static} Validation[ValidationError, Unit]apply([String])
+    }
+    class InputOfficeHourRequest {
+      + {static} of([String])
+    }
+    namespace form {
+      class WorkingDayForm {
+        + {static} Validation[ValidationError, WorkingDay] bind(Option[String])
+      }
+      class WorkingStartDateTimeForm {
+        + {static} Validation[ValidationError, WorkingStartDateTime] bind(Option[String])
+      }
+      class WorkingEndDateTimeForm {
+        + {static} Validation[ValidationError, WorkingEndDateTime] bind(Option[String])
+      }
+    }
+    api.input.InputOfficeHourApi -up-> api.input.InputOfficeHourRequest
+    api.input.InputOfficeHourRequest -up-> api.input.form.WorkingDayForm
+    api.input.InputOfficeHourRequest -up-> api.input.form.WorkingStartDateTimeForm
+    api.input.InputOfficeHourRequest -up-> api.input.form.WorkingEndDateTimeForm
+  }
+
+  namespace refer_total {
+    class ReferTotalOfficeHourOnMonthsApi {
+      + {static} Validation{ValidationError, ReferTotalOfficeHourOnMonthsResponse] apply([String])
+    }
+    class ReferTotalOfficeHourOnMonthsRequest {
+      + {static} of([String])
+    }
+    class ReferTotalOfficeHourOnMonthsResponse {
+      + {static} of(OfficeHoursOnMonth)
+    }
+    namespace form {
+      class WorkingMonthForm {
+        + {static} Validation[ValidationError, WorkingMonth] bind(Option[String])
+      }
+    }
+    api.refer_total.ReferTotalOfficeHourOnMonthsApi -up-> api.refer_total.ReferTotalOfficeHourOnMonthsRequest
+    api.refer_total.ReferTotalOfficeHourOnMonthsApi -up-> api.refer_total.ReferTotalOfficeHourOnMonthsResponse
+    api.refer_total.ReferTotalOfficeHourOnMonthsRequest -up-> api.refer_total.form.WorkingMonthForm
+  }
+}
+
+namespace service {
+  class InputOfficeHourService {
+    + apply(WorkingDay, WorkingStartDateTime, WorkingEndDateTime)
+  }
+  class ReferTotalOfficeHourOnMonthService {
+    + OfficeHoursOnMonth apply(WorkingMonth)
+  }
+}
+
+api.input.InputOfficeHourApi -down-> service.InputOfficeHourService
+api.refer_total.ReferTotalOfficeHourOnMonthsApi -down-> service.ReferTotalOfficeHourOnMonthService
+
+@enduml
