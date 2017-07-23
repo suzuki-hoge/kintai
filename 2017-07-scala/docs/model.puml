@@ -1,43 +1,44 @@
 @startuml
 
 class OfficeHours {
-  + OfficeMinutesWithoutBreaking workingTerm()
-  + OfficeMinutesWithoutBreaking overTerm()
+  + OfficeMinutesWithoutBreaking workingMinutes()
+  + OfficeMinutesWithoutBreaking overMinutes()
 }
 
 class WorkingDay {
   - LocalDate
+  + Bool isIn(WorkingMonth)
 }
 
 OfficeHours -right-> WorkingDay
 
 class WorkingHours {
-  - WorkingStartDateTime start
-  - WorkingEndDateTime end
+  - StartTime start
+  - EndTime end
   + OfficeMinutesWithoutBreaking withoutBreaking()
 }
 
 class OverHours {
-  - WorkingStartDateTime start
-  - WorkingEndDateTime end
+  - StartTime start
+  - EndTime end
   + OfficeMinutesWithoutBreaking withoutBreaking()
 }
 
 OfficeHours --> "1" WorkingHours
-OfficeHours --> "1" OverHours
+OfficeHours --> "0..1" OverHours
 
 class BreakHours <static> {
-  + {static} OfficeMinutesWithoutBreaking withoutBreaking(WorkingStartDateTime, WorkingEndDateTime)
+  + {static} OfficeMinutesWithoutBreaking withoutBreaking(StartTime, EndTime)
 }
 
 class BreakHour {
-  - BreakStartDateTime start
-  - BreakEndDateTime end
+  - BreakStartTime start
+  - BreakEndTime end
 }
 
 class BreakingMinutes {
   - Int
-  + {static} of(WorkingStartDateTime, WorkingEndDateTime, BreakStartDate, BreakEndDate)
+  + {static} of(StartTime, EndTime, BreakStartDate, BreakEndDate)
 }
 
 WorkingHours --> BreakHours
@@ -48,13 +49,13 @@ BreakHour -[hidden]right-> BreakingMinutes
 
 class OfficeMinutesWithoutBreaking {
   - Int
-  + {static} of(WorkingStartDateTime, WorkingEndDateTime, [BreakingMinutes])
+  + {static} of(StartTime, EndTime, [BreakingMinutes])
 }
 
 BreakHours -right-> OfficeMinutesWithoutBreaking
 
 class OfficeHoursFactory <static> {
-  + {static} create(WorkingDay, WorkingStartDateTime, WorkingEndDateTime)
+  + {static} create(WorkingDay, StartTime, EndTime)
 }
 
 OfficeHoursFactory -right-> OfficeHours
