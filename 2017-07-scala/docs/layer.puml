@@ -2,60 +2,61 @@
 
 namespace api {
   namespace input {
-    class InputOfficeHourApi {
-      + {static} Validation[ValidationError, Unit]apply([String])
+    class InputOfficeHourApi <static> {
+      + {static} apply([String])
     }
     class InputOfficeHourRequest {
-      + {static} of([String])
+      + {static} Validated[InputOfficeHourRequest] validate([String])
     }
     namespace form {
       class WorkingDayForm {
-        + {static} Validation[ValidationError, WorkingDay] bind(Option[String])
+        + {static} Validated[WorkingDay] bind(Option[String])
       }
-      class WorkingStartDateTimeForm {
-        + {static} Validation[ValidationError, WorkingStartDateTime] bind(Option[String])
+      class StartTimeForm {
+        + {static} Validated[StartTime] bind(Option[String])
       }
-      class WorkingEndDateTimeForm {
-        + {static} Validation[ValidationError, WorkingEndDateTime] bind(Option[String])
+      class EndTimeForm {
+        + {static} Validated[EndTime] bind(Option[String])
       }
     }
     api.input.InputOfficeHourApi -up-> api.input.InputOfficeHourRequest
     api.input.InputOfficeHourRequest -up-> api.input.form.WorkingDayForm
-    api.input.InputOfficeHourRequest -up-> api.input.form.WorkingStartDateTimeForm
-    api.input.InputOfficeHourRequest -up-> api.input.form.WorkingEndDateTimeForm
+    api.input.InputOfficeHourRequest -up-> api.input.form.StartTimeForm
+    api.input.InputOfficeHourRequest -up-> api.input.form.EndTimeForm
   }
 
   namespace refer_total {
-    class ReferTotalOfficeHourOnMonthsApi {
-      + {static} Validation{ValidationError, ReferTotalOfficeHourOnMonthsResponse] apply([String])
+    class ReferTotalOfficeHoursOnMonthApi <static> {
+      + {static} ReferTotalOfficeHoursOnMonthResponse apply([String])
     }
-    class ReferTotalOfficeHourOnMonthsRequest {
-      + {static} of([String])
+    class ReferTotalOfficeHoursOnMonthRequest {
+      + {static} Validated[ReferTotalOfficeHoursOnMonthRequest] validate([String])
     }
-    class ReferTotalOfficeHourOnMonthsResponse {
-      + {static} of(OfficeHoursOnMonth)
+    class ReferTotalOfficeHoursOnMonthResponse {
+      + {static} success(OfficeHoursOnMonth)
+      + {static} failure([ValidationError])
     }
     namespace form {
       class WorkingMonthForm {
-        + {static} Validation[ValidationError, WorkingMonth] bind(Option[String])
+        + {static} Validated[WorkingMonth] bind(Option[String])
       }
     }
-    api.refer_total.ReferTotalOfficeHourOnMonthsApi -up-> api.refer_total.ReferTotalOfficeHourOnMonthsRequest
-    api.refer_total.ReferTotalOfficeHourOnMonthsApi -up-> api.refer_total.ReferTotalOfficeHourOnMonthsResponse
-    api.refer_total.ReferTotalOfficeHourOnMonthsRequest -up-> api.refer_total.form.WorkingMonthForm
+    api.refer_total.ReferTotalOfficeHoursOnMonthApi -up-> api.refer_total.ReferTotalOfficeHoursOnMonthRequest
+    api.refer_total.ReferTotalOfficeHoursOnMonthApi -up-> api.refer_total.ReferTotalOfficeHoursOnMonthResponse
+    api.refer_total.ReferTotalOfficeHoursOnMonthRequest -up-> api.refer_total.form.WorkingMonthForm
   }
 }
 
 namespace service {
-  class InputOfficeHourService {
-    + apply(WorkingDay, WorkingStartDateTime, WorkingEndDateTime)
+  class InputOfficeHourService <static> {
+    + apply(WorkingDay, StartTime, EndTime)
   }
-  class ReferTotalOfficeHourOnMonthService {
+  class ReferTotalOfficeHoursOnMonthervice <static> {
     + OfficeHoursOnMonth apply(WorkingMonth)
   }
 }
 
 api.input.InputOfficeHourApi -down-> service.InputOfficeHourService
-api.refer_total.ReferTotalOfficeHourOnMonthsApi -down-> service.ReferTotalOfficeHourOnMonthService
+api.refer_total.ReferTotalOfficeHoursOnMonthApi -down-> service.ReferTotalOfficeHoursOnMonthervice
 
 @enduml
