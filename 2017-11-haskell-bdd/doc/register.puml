@@ -1,0 +1,30 @@
+@startuml
+
+object RegularTerm {
+  WorkingStartTime
+  WorkingEndTime
+}
+
+object TotalTerm {
+  StartTime
+  EndTime
+}
+
+object RestTerm
+
+object WorkingTerm {
+}
+
+object WorkingTermInRegularTerm {
+}
+
+object WorkingTermOutOfRegularTerm {
+}
+
+WorkingTerm --> WorkingTermInRegularTerm
+WorkingTerm --> WorkingTermOutOfRegularTerm
+
+TotalTerm --> WorkingTerm
+TotalTerm --> "*" RestTerm
+
+@enduml
