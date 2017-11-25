@@ -1,22 +1,16 @@
 module Time where
 
-data Time = Time String deriving (Show, Eq)
-
-instance Ord Time where
-       compare (Time x) (Time y) = compare x y
-
-data Times = Times Int deriving (Show, Eq)
+-- time
+data Time = Time Int Int deriving (Show, Eq, Ord)
 
 (-?) :: Time -> Time -> Times
-(-?) t1 t2 = Times (toM t1 - toM t2)
-    where
-        toM :: Time -> Int
-        toM time = (h time) * 60 + m time
-            where
-                h :: Time -> Int
-                h (Time v) = read $ takeWhile (/= ':') v
-                m :: Time -> Int
-                m (Time v) = read $ tail $ dropWhile (/= ':') v
+(-?) (Time h1 m1) (Time h2 m2) = Times $ (h1 * 60 + m1) - (h2 * 60 + m2)
 
-(+?) :: Times -> Times -> Times
-(+?) (Times x) (Times y) = Times $ x + y
+-- times
+data Times = Times Int deriving (Show, Eq, Ord)
+
+(++?) :: Times -> Times -> Times
+(++?) (Times v1) (Times v2) = Times $ v1 + v2
+
+(--?) :: Times -> Times -> Times
+(--?) (Times v1) (Times v2) = Times $ v1 - v2

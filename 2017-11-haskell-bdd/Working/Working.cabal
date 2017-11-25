@@ -16,11 +16,14 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Time
-                     , RegularTermDef
-                     , RestTermDef
-                     , RestTimes
                      , TotalTerm
-                     , WorkingTimes
+                     , RestTerm
+                     , RestTimes
+                     , RegularTerm
+                     , WorkingTimesInRegularTerm
+                     , WorkingTimesOutOfRegularTerm
+                     , WorkingRecord
+                     , TotalWorkingRecord
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 
