@@ -1,0 +1,51 @@
+@startuml
+
+package Time {
+  object Time {
+    (-?) :: Time -> Time -> Times
+  }
+  object Times {
+    (++?) :: Times -> Times -> Times
+    (--?) :: Times -> Times -> Times
+  }
+}
+object RegularTerm {
+  Time
+  Time
+}
+
+object TotalTerm {
+  Time
+  Time
+}
+
+object RestTerm {
+  Time
+  Time
+}
+
+object RestTimes {
+  Times
+}
+
+object WorkingTimesInRegularTerm {
+  Times
+}
+
+object WorkingTimesOutOfRegularTerm {
+  Times
+}
+
+object WorkingRecord {
+}
+
+WorkingRecord --> TotalTerm
+WorkingRecord -[hidden]-> RegularTerm
+WorkingRecord -[hidden]-> RestTerm
+WorkingRecord --> RestTimes
+WorkingRecord --> WorkingTimesInRegularTerm
+WorkingRecord --> WorkingTimesOutOfRegularTerm
+
+Time -[hidden]down-> WorkingRecord
+
+@enduml
