@@ -1,0 +1,74 @@
+@startuml
+
+class OfficeHours {
+  + OfficeMinutesWithoutBreaking workingMinutes()
+  + OfficeMinutesWithoutBreaking overMinutes()
+}
+
+class WorkingDay {
+  - LocalDate
+  + Bool isIn(WorkingMonth)
+}
+
+OfficeHours -right-> WorkingDay
+
+class WorkingHours {
+  - StartTime start
+  - EndTime end
+  + OfficeMinutesWithoutBreaking withoutBreaking()
+}
+
+class OverHours {
+  - StartTime start
+  - EndTime end
+  + OfficeMinutesWithoutBreaking withoutBreaking()
+}
+
+OfficeHours --> "1" WorkingHours
+OfficeHours --> "0..1" OverHours
+
+class BreakHours <static> {
+  + {static} OfficeMinutesWithoutBreaking withoutBreaking(StartTime, EndTime)
+}
+
+class BreakHour {
+  - BreakStartTime start
+  - BreakEndTime end
+}
+
+class BreakingMinutes {
+  - Int
+  + {static} of(StartTime, EndTime, BreakStartDate, BreakEndDate)
+}
+
+WorkingHours --> BreakHours
+OverHours --> BreakHours
+
+BreakHours -down-> "*" BreakHour
+BreakHour -[hidden]right-> BreakingMinutes
+
+class OfficeMinutesWithoutBreaking {
+  - Int
+  + {static} of(StartTime, EndTime, [BreakingMinutes])
+}
+
+BreakHours -right-> OfficeMinutesWithoutBreaking
+
+class OfficeHoursFactory <static> {
+  + {static} create(WorkingDay, StartTime, EndTime)
+}
+
+OfficeHoursFactory -right-> OfficeHours
+
+class OfficeHoursOnMonth {
+}
+
+class WorkingMonth {
+  - LocalDate
+}
+
+OfficeHoursOnMonth -right-> WorkingMonth
+
+OfficeHoursOnMonth -down-> "0..*" OfficeHours
+
+@enduml
